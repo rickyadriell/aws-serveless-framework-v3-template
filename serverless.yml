@@ -1,0 +1,37 @@
+service: your-service-name
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-west-2
+
+plugins:
+  - serverless-better-credentials
+  - serverless-offline
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+
+custom:
+  webpack:
+    packager: npm
+    includeModules: true
+    webpackConfig: webpack.config.js
+
+functions:
+  hello:
+    name: ${self:service}-hello-${self:stage}
+    handler: src/function/handler.hello
+    events:
+      - httpApi:
+          method: get
+          path: /hello
+    environment:
+      POWERTOOLS_SERVICE_NAME: ${self:service}-help-${self:stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - '*'
+        Resource:
+          - '*'
