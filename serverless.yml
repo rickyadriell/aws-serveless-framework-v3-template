@@ -21,14 +21,14 @@ custom:
 
 functions:
   hello:
-    name: ${self:service}-hello-${self:stage}
-    handler: src/function/handler.hello
+    name: ${self:service}-hello-${sls:stage}
+    handler: src/function/hello.handler
     events:
       - httpApi:
           method: get
           path: /hello
     environment:
-      POWERTOOLS_SERVICE_NAME: ${self:service}-help-${self:stage}
+      POWERTOOLS_SERVICE_NAME: ${self:service}-hello-${sls:stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
